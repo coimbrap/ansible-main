@@ -1,0 +1,6 @@
+---
+- hosts: pve,lxc
+  gather_facts: false
+  roles:
+    - sshkeys
+...

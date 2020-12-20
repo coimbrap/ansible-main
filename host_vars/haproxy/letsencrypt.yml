@@ -1,0 +1,9 @@
+use_dns_plugin: yes
+certbot_version: latest
+dns_plugin: "ovh"
+email: "cert@devo.re"
+domains_list:
+  - "devo.re"
+  - "*.devo.re"
+certbot_stop_services: haproxy
+certbot_cmd_deploy_cert: "/bin/cat /etc/letsencrypt/live/devo.re/privkey.pem /etc/letsencrypt/live/devo.re/fullchain.pem > /etc/ssl/letsencrypt/devo.re.pem"

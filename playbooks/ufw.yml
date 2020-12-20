@@ -1,0 +1,6 @@
+---
+- hosts: lxc:&$hosts
+  gather_facts: false
+  roles:
+    - ufw
+...

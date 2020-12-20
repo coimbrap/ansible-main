@@ -1,0 +1,25 @@
+# Configuration SSH
+
+Host pve
+    Hostname 10.0.20.1
+    User root
+    ProxyJump bastion
+
+Host opnsense
+    Hostname 10.0.20.254
+    User root
+    ProxyJump bastion
+
+Host bastion
+    Hostname devo.re
+    User root
+
+Host haproxy
+    Hostname  10.0.20.101
+    User root
+    ProxyJump bastion
+
+Host proxy
+    Hostname  10.0.20.252
+    User root
+    ProxyJump bastion

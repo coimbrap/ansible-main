@@ -1,0 +1,5 @@
+ct_gw6_suffix: "beef"
+ct_gw4_suffix: "254"
+proxy_ip: 10.0.20.252
+apt_proxy_port: 9999
+http_proxy_port: 3128

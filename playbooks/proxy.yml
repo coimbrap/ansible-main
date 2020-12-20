@@ -1,0 +1,7 @@
+---
+- hosts: proxycache
+  gather_facts: false
+  roles:
+    - apt-cacher-ng
+    - squid3
+  tags: proxy

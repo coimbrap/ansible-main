@@ -1,0 +1,390 @@
+opn_general:
+  - system/hostname: "opn"
+  - system/domain: "devo.re"
+  - system/webgui/protocol: "https"
+  - system/ssh/group: admins
+  - system/ssh/noauto: 1
+  - system/ssh/enabled: enabled
+  - system/ssh/permitrootlogin: 1
+  - system/webgui/noantilockout: 1
+
+opn_unset:
+  - trigger_initial_wizard
+
+opn_user:
+  - name: root
+    settings:
+      - key: authorizedkeys
+        value: "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU9qVlFrdXY3UnZTYzFxaU9pUURnL0lKYjZ2NmQ3YkhlWER2Vi9kSDBVM0wgcGllcnJlQGRlYmlhbgo="
+
+opn_interfaces_specific:
+  - interface: wan
+    settings:
+      - key: if
+        value: vtnet0_vlan10
+      - key: descr
+        value: WAN
+      - key: blockbogons
+        value: 1
+      - key: ipaddr
+        value: '10.0.10.254'
+      - key: subnet
+        value: 24
+      - key: gateway
+        value: WAN_GW
+  - interface: lan
+    settings:
+      - key: if
+        value: vtnet0_vlan20
+      - key: descr
+        value: DMZ
+      - key: ipaddr
+        value: '10.0.20.254'
+      - key: subnet
+        value: 24
+  - interface: opt1
+    settings:
+      - key: if
+        value: vtnet0_vlan30
+      - key: descr
+        value: LOC
+      - key: ipaddr
+        value: '10.0.30.254'
+      - key: subnet
+        value: 24
+  - interface: opt2
+    settings:
+      - key: if
+        value: vtnet0_vlan40
+      - key: descr
+        value: DIRTY
+      - key: ipaddr
+        value: '10.0.40.254'
+      - key: subnet
+        value: 24
+opn_interfaces_all:
+  - key: 'enable'
+    value: "1"
+    interfaces: ['wan','lan','opt1','opt2']
+opn_vlans:
+  - tag: 10
+    settings:
+      - key: if
+        value: vtnet0
+      - key: descr
+        value: "WAN"
+      - key: pcp
+        value: 0
+      - key: vlanif
+        value: vtnet0_vlan10
+  - tag: 20
+    settings:
+      - key: if
+        value: vtnet0
+      - key: descr
+        value: "DMZ"
+      - key: pcp
+        value: 0
+      - key: vlanif
+        value: vtnet0_vlan20
+  - tag: 30
+    settings:
+      - key: if
+        value: vtnet0
+      - key: descr
+        value: "LOC"
+      - key: pcp
+        value: 0
+      - key: vlanif
+        value: vtnet0_vlan30
+  - tag: 40
+    settings:
+      - key: if
+        value: vtnet0
+      - key: descr
+        value: "DIRTY"
+      - key: pcp
+        value: 0
+      - key: vlanif
+        value: vtnet0_vlan40
+opn_gateways:
+  - interface: wan
+    settings:
+      - key: gateway
+        value: '10.0.10.1'
+      - key: name
+        value: WAN_GW
+      - key: ipprotocol
+        value: inet
+opn_nat_settings:
+- nat/outbound/mode: "automatic"
+opn_nat_port_forward:
+- descr: 'DNAT HAProxy (80)'
+  settings:
+    - key: protocol
+      value: tcp
+    - key: interface
+      value: wan
+    - key: ipprotocol
+      value: inet
+    - key: target
+      value: '10.0.20.101'
+    - key: local-port
+      value: 80
+    - key: source/any
+      value: 1
+    - key: destination/network
+      value: wanip
+    - key: destination/port
+      value: 80
+- descr: 'DNAT HAProxy (443)'
+  settings:
+    - key: protocol
+      value: tcp
+    - key: interface
+      value: wan
+    - key: ipprotocol
+      value: inet
+    - key: target
+      value: '10.0.20.101'
+    - key: local-port
+      value: 443
+    - key: source/any
+      value: 1
+    - key: destination/network
+      value: wanip
+    - key: destination/port
+      value: 443
+- descr: 'DNAT SSH (22)'
+  settings:
+    - key: protocol
+      value: tcp
+    - key: interface
+      value: wan
+    - key: ipprotocol
+      value: inet
+    - key: target
+      value: '10.0.20.100'
+    - key: local-port
+      value: 22
+    - key: source/any
+      value: 1
+    - key: destination/network
+      value: wanip
+    - key: destination/port
+      value: 22
+opn_filter:
+  - descr: Apt Cacher
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: wan,lan,opt1,opt2
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: floating
+        value: "1"
+      - key: quick
+        value: 1
+      - key: protocol
+        value: tcp
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.252'
+      - key: destination/port
+        value: 9999
+  - descr: Squid
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: wan,lan,opt1,opt2
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: floating
+        value: "1"
+      - key: quick
+        value: 1
+      - key: protocol
+        value: tcp
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.252'
+      - key: destination/port
+        value: 3128
+  - descr: Allow all LOC
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: opt1
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: source/any
+        value: 1
+      - key: destination/any
+        value: 1
+  - descr: HAProxy to OPN
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: protocol
+        value: tcp
+      - key: source/address
+        value: 10.0.20.101
+      - key: destination/address
+        value: 10.0.20.254
+      - key: destination/port
+        value: 443
+  - descr: Proxy Interne to EXT (all)
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: source/address
+        value: '10.0.20.252'
+      - key: destination/address
+        value: '10.0.0.0/8'
+      - key: destination/not
+        value: 1
+  - descr: Bastion to LOC
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: protocol
+        value: tcp
+      - key: source/address
+        value: '10.0.20.100'
+      - key: destination/address
+        value: '10.0.30.0/24'
+      - key: destination/port
+        value: 22
+  - descr: Bastion to OPN
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: protocol
+        value: tcp
+      - key: source/address
+        value: '10.0.20.100'
+      - key: destination/address
+        value: '10.0.20.254'
+      - key: destination/port
+        value: 22
+  - descr: ICMP for IPv4 hosts
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: protocol
+        value: icmp
+      - key: source/any
+        value: 1
+      - key: destination/any
+        value: 1
+  - descr: Allow DNAT HAProxy (80)
+    settings:
+      - key: interface
+        value: wan
+      - key: protocol
+        value: tcp
+      - key: ipprotocol
+        value: inet
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.101'
+      - key: destination/port
+        value: 80
+  - descr: Allow DNAT HAProxy (443)
+    settings:
+      - key: interface
+        value: wan
+      - key: protocol
+        value: tcp
+      - key: ipprotocol
+        value: inet
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.101'
+      - key: destination/port
+        value: 443
+  - descr: Allow DNAT SSH (443)
+    settings:
+      - key: interface
+        value: wan
+      - key: protocol
+        value: tcp
+      - key: ipprotocol
+        value: inet
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.100'
+      - key: destination/port
+        value: 22

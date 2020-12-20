@@ -1,0 +1,77 @@
+ferm_packages:
+  - "ferm"
+  - "libnet-dns-perl"
+
+ferm_conf_template: ferm.conf.j2
+
+ferm_services: ferm
+ferm_service_state: 'started'
+ferm_service_enabled: 'yes'
+
+define:
+  - name: IF_FW
+    value: fw
+  - name: IF_EXT
+    value: vmbr0
+  - name: IF_DMZ
+    value: dmz
+  - name: PUBLIC_IP
+    value: 195.154.163.18
+  - name: IP_FW
+    value: 10.0.10.254
+  - name: NET_FW
+    value: 10.0.10.0/24
+  - name: PORTS_FW
+    type: list
+    value: ['80','443','22']
+  - name: FORWARD_TCP
+    type: function
+    param: ['proto','port','dest']
+    value: ['domain ip table filter chain FORWARD interface $IF_EXT outerface $IF_FW daddr $dest proto $proto dport $port ACCEPT;','domain ip table nat chain PREROUTING interface $IF_EXT daddr $PUBLIC_IP proto $proto dport $port DNAT to $dest;']
+
+default_policy_input: DROP
+default_policy_forward: DROP
+default_policy_output: ACCEPT
+
+icmp_limit: '10/second'
+icmp_burst: '10'
+
+syn_limit: '40/second'
+syn_burst: '20'
+
+input_v4:
+  - interface: $IF_DMZ
+    proto: tcp
+    dport: [8006,22]
+    policy: ACCEPT
+  - interface: $IF_EXT
+    proto: tcp
+    dport: [8006]
+    policy: ACCEPT
+  - proto: icmp
+    icmp_type: echo-request
+    policy: ACCEPT
+
+forward_v4:
+  - interface: $IF_FW
+    outerface: $IF_EXT
+    policy: ACCEPT
+
+output_v4: []
+
+ipv4: true
+
+ipv6: false
+
+nat: true
+
+nat_postrouting:
+  - saddr: $NET_FW
+    outerface: $IF_EXT
+    to: $PUBLIC_IP
+
+nat_prerouting: []
+
+functions:
+  - name: FORWARD_TCP
+    args: ['(tcp udp)', '$PORTS_FW', '$IP_FW']

@@ -1,0 +1,6 @@
+---
+- hosts: fw
+  gather_facts: false
+  roles:
+    - createvm
+...

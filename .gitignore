@@ -1,0 +1,7 @@
+retry/*
+!retry/.gitkeep
+roles/*
+!roles/.gitkeep
+secret
+venv3
+*~

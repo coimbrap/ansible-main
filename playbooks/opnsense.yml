@@ -1,0 +1,18 @@
+---
+- hosts: fw
+  vars:
+    opn_unset:
+      - filter
+      - interfaces
+      - vlans
+      - nat
+      - bridges
+      - dhcpd
+      - gateways
+      - dhcpdv6
+      - dhrelay
+      - dhcrelay6
+  gather_facts: false
+  roles:
+    - opnsense
+...

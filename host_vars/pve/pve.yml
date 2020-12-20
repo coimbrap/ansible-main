@@ -1,0 +1,16 @@
+pve_groups:
+  - name: adminsys
+    comment: Adminsys Group
+pve_users:
+  - name: coimbrap@pam
+    firstname: coimbrap
+    groups: [ "adminsys" ]
+pve_acls:
+  - path: /
+    roles: [ "Administrator" ]
+    groups: [ "adminsys" ]
+
+deploy_ssh_keys: false
+
+pve_templates_list: ['debian-10-standard_10.7-1_amd64.tar.gz']
+iso_list: ['https://opnsense-mirror.hiho.ch/releases/mirror/OPNsense-20.7-OpenSSL-dvd-amd64.iso.bz2']

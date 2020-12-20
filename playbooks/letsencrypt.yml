@@ -1,0 +1,8 @@
+---
+- hosts: rproxy
+  gather_facts: false
+  roles:
+    - letsencrypt
+  environment:
+    HTTP_PROXY: '10.0.20.252:3128'
+    HTTPS_PROXY: '10.0.20.252:3128'

@@ -1,0 +1,6 @@
+---
+- hosts: rproxy
+  gather_facts: false
+  roles:
+    - haproxy
+...

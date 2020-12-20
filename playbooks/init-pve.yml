@@ -1,0 +1,101 @@
+---
+#On initialise proxmox
+- hosts: pve
+  gather_facts: false
+  roles:
+    - init_pve
+    - pveconfig
+    - ovs
+  tasks:
+  - name: Apply config
+    shell: |
+      mv /etc/network/interfaces.new /etc/network/interfaces
+      ifdown -a;ifup -a
+
+#On crée les conteneurs de base (bastion,proxycache & rproxy) sans accès ssh
+- name: init-pve | création vm
+  import_playbook: create-ct-no-ssh.yml
+  vars:
+    ssh_access: false
+
+#On crée la VM pour OPNsense
+- name: init-pve | création vm
+  import_playbook: create-vm.yml
+
+#Sont accessible via SSH : OPN avec un proxyjump sur pve
+- hosts: pve
+  gather_facts: false
+  roles:
+    - simple_ferm
+  vars_files: "../host_vars/pve/initial-ferm.yml"
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Pause
+    pause:
+      prompt: "Enter YES when check are passed and OPNSense WAN + SSH + Allow All"
+
+- name: init-pve | configuration opnsense
+  import_playbook: opnsense-password.yml
+
+- hosts: pve
+  gather_facts: false
+  roles:
+    - simple_ferm
+  vars_files: "../host_vars/pve/final-ferm.yml"
+
+#La bastion est en place et fonctionel
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  - name: bastion on opnsense
+    shell: |
+      "sed -i ../host_vars/opnsense/vm.yml -e 's/node_bastion: pve/node_bastion: bastion/g'"
+      sed -i "../host_vars/pve/vm.yml" -e 's/vm_ip: 10.0.10.254/vm_ip: 10.0.20.254/g'
+      sed -e '/ssh_allow_tcp_forwarding/s/^/#/g' -i "../host_vars/pve/pve.yml"
+      sed -e '/^node_bastion/s/^/#/g' -i "../host_vars/bastion/bastion.yml"
+      grep -q '^ssh_ip:*' "../host_vars/bastion/bastion.yml" || echo 'ssh_ip: "devo.re"' >> "../host_vars/bastion/bastion.yml"
+
+#Mise à jours de l'inventaire ssh
+- name: init-pve | mise a jours ssh config
+  import_playbook:
+    - create-ct-no-ssh.yml
+  vars:
+    ssh_access: false
+
+- name: init-pve | déploiement des clés
+  import_playbook:
+    - sshkeys.yml
+
+- name: init-pve | proxy cache
+  import_playbook:
+    - proxy.yml
+
+#On termine l'installation des conteneurs
+- name: init-pve | installation des vm
+  import_playbook:
+    - create-vm.yml
+
+- name: init-pve | installation des ct
+  import_playbook:
+    - create-ct.yml
+
+- name: init-pve | configuration ssh
+  import_playbook:
+    - sshconfig.yml
+
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  - name: deb
+    shell: echo "eoeo"
+
+- name: init-pve | letsencrypt
+  import_playbook: letsencrypt.yml
+
+- name: init-pve | haproxy
+  import_playbook: haproxy.yml
+...

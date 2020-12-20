@@ -1,0 +1,60 @@
+---
+base_domain: devo.re
+haproxy_global_dhparams: false
+
+frontend_with_acl: secure-all #main frontend
+
+haproxy_frontend:
+  - name: unsecure-all
+    mode: http
+    bind:
+      - listen: ':::80'
+        param:
+          - v4v6
+    redirect:
+      - string: 'scheme https code 301'
+    default_backend: drop-http
+
+    reqadd:
+      - string: 'X-Forwarded-Proto:\ https'
+
+  - name: secure-all
+    mode: http
+    option:
+      - forwardfor
+    bind:
+      - listen: ':::443'
+        param:
+          - v4v6
+          - ssl
+          - no-sslv3
+          - crt /etc/ssl/letsencrypt
+        option:
+          - forwardfor
+          - httplog
+    rspadd:
+      - string: 'Strict-Transport-Security:\ max-age=63072000'
+    acl:
+      - string: 'www hdr_beg(host) -i www.'
+      - string: 'web hdr_end(host) devo.re'
+    reqirep:
+      - search: '^Host:\ www.(.*)$ Host:\'
+        string: '\1'
+        cond: 'if www'
+    default_backend: drop-http
+
+haproxy_backend:
+  - name: drop-http
+    mode: http
+    http-request:
+      - action: deny
+
+backendacl:
+  - name: pve-interface
+    sub: pve
+    ipPorts: ['10.0.20.1:8006']
+    sslOpt: ssl verify none
+  - name: opn-interface
+    sub: opn
+    ipPorts: ['10.0.20.254:443']
+    sslOpt: ssl verify none
