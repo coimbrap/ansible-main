@@ -4,8 +4,8 @@
   gather_facts: false
   roles:
     - init_pve
-    - pveconfig
-    - ovs
+    - proxmox-init
+    - openvswitch
   tasks:
   - name: Apply config
     shell: |
