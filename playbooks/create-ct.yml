@@ -1,6 +1,6 @@
 - hosts: lxc
   connection: ssh
-  gather_facts: true
+  gather_facts: false
   roles:
     - createct
     - ufw

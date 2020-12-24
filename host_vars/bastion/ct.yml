@@ -18,5 +18,4 @@ path_motd: '/etc/motd'
 ssh_print_motd: true
 erase_ssh: true
 #node_bastion: pve
-ssh_allow_tcp_forwarding: true
 ssh_ip: "devo.re"
