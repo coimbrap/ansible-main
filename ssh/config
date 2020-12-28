@@ -14,12 +14,34 @@ Host bastion
     Hostname devo.re
     User root
 
+Host proxy
+    Hostname  10.0.20.252
+    User root
+    ProxyJump bastion
+
+Host cloud
+    Hostname  10.0.20.102
+    User root
+    ProxyJump bastion
+
 Host haproxy
     Hostname  10.0.20.101
     User root
     ProxyJump bastion
 
-Host proxy
-    Hostname  10.0.20.252
+Host mailgw
+    Hostname  10.0.20.103
+    User root
+    ProxyJump bastion
+
+Host mail
+    Hostname  10.0.20.104
+    User root
+    ProxyJump bastion
+
+
+
+Host dns
+    Hostname  10.0.20.105
     User root
     ProxyJump bastion

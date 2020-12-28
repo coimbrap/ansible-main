@@ -15,8 +15,6 @@
 #On crée les conteneurs de base (bastion,proxycache & rproxy) sans accès ssh
 - name: init-pve | création vm
   import_playbook: create-ct-no-ssh.yml
-  vars:
-    ssh_access: false
 
 #On crée la VM pour OPNsense
 - name: init-pve | création vm

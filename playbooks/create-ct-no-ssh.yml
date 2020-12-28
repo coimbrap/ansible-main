@@ -3,3 +3,5 @@
   gather_facts: false
   roles:
     - createct
+  vars:
+    ssh_access: false
