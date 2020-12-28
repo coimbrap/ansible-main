@@ -1,0 +1,51 @@
+fqdn : "c.devo.re"
+ssl_certificate_type  : 'selfsigned'
+
+# Nextcloud varibales
+
+# data dir
+nc_datadir           : /var/nc-data
+# admin user
+nc_admin             : 'admin'
+
+# database settings
+nc_db_type           : 'pgsql'        # (PostgreSQL)
+nc_db_host           : ''
+nc_db                : 'nextcloud'
+nc_db_user           : 'nextcloud'
+nc_db_prefix         : 'oc_'
+
+# Nextcloud mail setup
+nc_configure_mail    : false
+nc_mail_from         :
+nc_mail_smtpmode     : smtp
+nc_mail_smtpauthtype : LOGIN
+nc_mail_domain       :
+nc_mail_smtpname     :
+nc_mail_smtpsecure   : tls
+nc_mail_smtpauth     : 1
+nc_mail_smtphost     :
+nc_mail_smtpport     : 587
+nc_mail_smtpname     :
+nc_mail_smtppwd      :
+
+# php Version
+php_version          : '7.3'
+
+# Install turn server for Nextcloud Talk
+talk_install         : false
+
+# Allways get the latest version of Nextcloud
+next_archive         : https://download.nextcloud.com/server/releases/latest.tar.bz2
+
+# Install Collabra Online
+# more info about collabora office: https://www.collaboraoffice.com/
+install_collabora     : false
+
+# Install Online Office
+# more info about onlyoffice office: https://www.onlyoffice.com
+install_onlyoffice    : false
+
+#
+# defaults path of your generated credentials (e.g. database, talk, onlyoffice)
+credential_store      : /etc/nextcloud
