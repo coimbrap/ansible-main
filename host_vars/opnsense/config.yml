@@ -173,6 +173,24 @@ opn_nat_port_forward:
       value: wanip
     - key: destination/port
       value: 22
+- descr: 'DNAT DNS (53)'
+  settings:
+    - key: protocol
+      value: tcp/udp
+    - key: interface
+      value: wan
+    - key: ipprotocol
+      value: inet
+    - key: target
+      value: '10.0.20.105'
+    - key: local-port
+      value: 53
+    - key: source/any
+      value: 1
+    - key: destination/network
+      value: wanip
+    - key: destination/port
+      value: 53
 opn_filter:
   - descr: Apt Cacher
     settings:
@@ -278,6 +296,26 @@ opn_filter:
         value: 1
       - key: source/address
         value: '10.0.20.252'
+      - key: destination/address
+        value: '10.0.0.0/8'
+      - key: destination/not
+        value: 1
+  - descr: PMG to EXT (all)
+    settings:
+      - key: type
+        value: pass
+      - key: interface
+        value: lan
+      - key: ipprotocol
+        value: inet
+      - key: statetype
+        value: keep state
+      - key: direction
+        value: in
+      - key: quick
+        value: 1
+      - key: source/address
+        value: '10.0.20.103'
       - key: destination/address
         value: '10.0.0.0/8'
       - key: destination/not
@@ -388,3 +426,17 @@ opn_filter:
         value: '10.0.20.100'
       - key: destination/port
         value: 22
+  - descr: Allow DNAT DNS (53)
+    settings:
+      - key: interface
+        value: wan
+      - key: protocol
+        value: tcp/udp
+      - key: ipprotocol
+        value: inet
+      - key: source/any
+        value: 1
+      - key: destination/address
+        value: '10.0.20.105'
+      - key: destination/port
+        value: 53
