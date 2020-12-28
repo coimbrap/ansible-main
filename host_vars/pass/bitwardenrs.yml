@@ -1,0 +1,11 @@
+bitwardenrs_directory: /opt/bitwarden_rs
+bitwardenrs_version: 1.17.0
+bitwardenrs_webvault: true
+bitwardenrs_webvault_version: 2.16.1
+bitwardenrs_datadir: "{{ bitwardenrs_directory }}/data"
+bitwardenrs_encryption_key: ""
+bitwardenrs_config:
+  DOMAIN: "https://p.devo.re/"
+  DATABASE_URL: "postgresql://{{ db_user }}:{{ db_passwd }}@127.0.0.1:5432/{{ db_name }}"
+bitwardenrs_force_encryption_key: false
+bitwardenrs_systemd: "{{ ansible_service_mgr == 'systemd' }}"

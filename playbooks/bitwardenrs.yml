@@ -1,0 +1,8 @@
+- hosts: nc
+  connection: ssh
+  gather_facts: yes
+  roles:
+    - bitwardenrs
+  environment:
+    HTTP_PROXY: '10.0.20.252:3128'
+    HTTPS_PROXY: '10.0.20.252:3128'
