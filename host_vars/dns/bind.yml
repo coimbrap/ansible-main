@@ -90,21 +90,6 @@ bind_tsig:
           3038
 
 bind_views:
-  ext:
-    recursion: none
-    acl: any
-    zones:
-      - devo.re:
-          reverse: false
-          ns_primary: ns-a.devo.re
-          mail: root@ns-a.devo.re
-          options:
-            auto-dnssec: maintain
-            inline-signing: yes
-          records:
-            - { name: '@', type: ns, value: ns-a.devo.re. }
-            - { name: '@', type: a, ttl: 5m, value: 195.154.163.18 }
-            - { name: '*', type: a, ttl: 5m, value: 195.154.163.18 }
   int:
     recursion: any
     acl: int
@@ -128,6 +113,21 @@ bind_views:
             - { name: 'mailgw', type: a, ttl: 5m, value: 10.0.20.103 }
             - { name: 'mail', type: a, ttl: 5m, value: 10.0.20.104 }
             - { name: 'proxy', type: a, ttl: 5m, value: 10.0.20.252 }
+  ext:
+    recursion: none
+    acl: any
+    zones:
+      - devo.re:
+          reverse: false
+          ns_primary: ns-a.devo.re
+          mail: root@ns-a.devo.re
+          options:
+            auto-dnssec: maintain
+            inline-signing: yes
+          records:
+            - { name: '@', type: ns, value: ns-a.devo.re. }
+            - { name: '@', type: a, ttl: 5m, value: 195.154.163.18 }
+            - { name: '*', type: a, ttl: 5m, value: 195.154.163.18 }
 
 bind_acl:
   int:
