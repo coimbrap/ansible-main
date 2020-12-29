@@ -44,6 +44,7 @@ bind_tsig:
   transfer:
     - name: tsigkey_global
       zone: wild
+      view: wild
       algorithm: "hmac-sha512"
       secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -59,6 +60,7 @@ bind_tsig:
   edition:
     - name: ddns_devore_adm
       zone: devo.re
+      view: wild
       policy: custom
       policy_custom: zonesub any
       algorithm: "hmac-sha512"
@@ -76,6 +78,7 @@ bind_tsig:
     - name: ddns_certbot_global
       policy: certbot
       zone: wild
+      view: ext
       algorithm: "hmac-sha512"
       secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -92,7 +95,9 @@ bind_tsig:
 bind_views:
   int:
     recursion: any
-    acl: int
+    acl:
+      - '!key ddns_certbot_global'
+      - int
     zones:
       - devo.re:
           reverse: true
@@ -115,10 +120,15 @@ bind_views:
             - { name: 'proxy', type: a, ttl: 5m, value: 10.0.20.252 }
   ext:
     recursion: none
-    acl: any
+    acl:
+      - any
     zones:
       - devo.re:
-          reverse: false
+          reverse: true
+          r_records:
+            - { name: '@', type: ns, value: ns-a.devo.re. }
+            - { name: 'r', type: a, value: 195.154.163.18 }
+          ipv4: 195.154.163.18
           ns_primary: ns-a.devo.re
           mail: root@ns-a.devo.re
           options:
