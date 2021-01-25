@@ -11,7 +11,7 @@ Host opnsense
     ProxyJump bastion
 
 Host bastion
-    Hostname devo.re
+    Hostname 195.154.163.18
     User root
 
 Host proxy
@@ -39,9 +39,22 @@ Host mail
     User root
     ProxyJump bastion
 
-
-
 Host dns
     Hostname  10.0.20.105
+    User root
+    ProxyJump bastion
+
+Host ldap
+    Hostname  10.0.20.106
+    User root
+    ProxyJump bastion
+
+Host ldapui
+    Hostname  10.0.20.107
+    User root
+    ProxyJump bastion
+
+Host samapi
+    Hostname  10.0.20.150
     User root
     ProxyJump bastion

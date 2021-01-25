@@ -1,11 +1,11 @@
-ct_name: dns
-ct_vmid: "105"
+ct_name: mail
+ct_vmid: "104"
 ct_node: "pve"
 ct_if: vmbr1
 ct_vlan: 20
 ct_prefix4: "10.0.20"
-ct_cpus: 1
-ct_ram: 1024
+ct_cpus: 2
+ct_ram: 2048
 ct_swap: 0
 ct_storage: local-zfs
 ct_disk: "8"

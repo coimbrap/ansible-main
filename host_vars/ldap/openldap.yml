@@ -1,0 +1,93 @@
+generate_tls_certs: true
+generate_ca_cert: true
+generate_server_cert: true
+copy_cert: true
+ldap: true
+tls_server_key_cn: 'ldap.devo.re'
+server_name: ldap
+rewrite_ldap: true
+delegate_to_ldap: ldap
+
+need_tls_cert: "{{ (groups.nc + groups.backmail + groups.pmg) | list }}"
+
+
+cert_path: /etc/ssl/ldap
+ca_cert: devore-ca.pem
+server_cert: ldap.pem
+server_key: ldap.key
+tmp_dir: /tmp/
+
+domain: devo.re
+org: devo
+ldap_backend: "mdb"
+
+ou:
+  - name: group
+  - name: people
+  - name: system
+
+cn:
+ - name: admins
+   description: devo admins
+ - name: users
+   description: devo users
+
+pen: 56022
+schemas:
+  - name: mail
+    position: 1
+    attributes:
+      - name: mailquota
+        desc: Quota Mail
+        equality: caseExactMatch
+        options:
+          - single-value
+      - name: mailactif
+        desc: Mail actif
+        equality: caseExactMatch
+        options:
+          - single-value
+      - name: mailaliasfrom
+        desc: Mail from
+        equality: caseExactMatch
+        options:
+          - single-value
+      - name: mailaliasto
+        desc: Mail to
+        equality: caseExactMatch
+      - name: mailaliasactif
+        desc: Alias actif
+        equality: caseExactMatch
+        options:
+          - single-value
+      - name: maildomainactif
+        desc: Domaine Actif
+        equality: caseExactMatch
+        options:
+          - single-value
+      - name: maildomain
+        desc: Domaine
+        equality: caseExactMatch
+        options:
+          - single-value
+    classes:
+      - name: mailaccount
+        sup: top
+        type: auxiliary
+        must:
+          - mailquota
+          - mailactif
+      - name: mailalias
+        sup: top
+        type: structural
+        must:
+          - cn
+          - mailaliasfrom
+          - mailaliasto
+          - mailaliasactif
+      - name: maildomains
+        sup: top
+        type: auxiliary
+        must:
+          - maildomain
+          - maildomainactif

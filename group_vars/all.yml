@@ -3,6 +3,19 @@ keystodeploy:
   - name: Pierre
     sshkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOjVQkuv7RvSc1qiOiQDg/IJb6v6d7bHeXDvV/dH0U3L coimbrap@debian
 
+ldap_group: "{{ groups.openldap }}"
+
+selfsignedcerts_host: haproxy
+tls_ca_path: /root/devore-ca
+tls_ca_cert: devore-ca.pem
+tls_ca_csr: devore-ca.csr
+tls_ca_key: devore-ca.key
+tls_ca_country: FR
+tls_ca_organization: Devore
+tls_ca_commonname: Devore Authority
+tls_client_organization: Devore Adminsys
+haproxy_group: "{{ groups.rproxy }}"
+
 ssh_kerberos_support: false
 ssh_banner_path: '/etc/ssh/banner.txt'
 ssh_banner: true
@@ -41,3 +54,5 @@ ssh_kex:
   - diffie-hellman-group16-sha512
   - diffie-hellman-group18-sha512
   - diffie-hellman-group-exchange-sha256
+
+to_install: ldap-utils,sudo,vim,net-tools,nmap,dnsutils,unattended-upgrades,apt-listchanges,wget,curl,git

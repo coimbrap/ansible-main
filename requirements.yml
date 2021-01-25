@@ -45,7 +45,7 @@
   version: 'v1.5'
 - name: bind
   src: git+https://github.com/coimbrap/ansible-role-bind
-  version: 'v0.1'
+  version: 'v0.2'
 - name: bitwarden_rs
   src: git+https://github.com/dmaes/ansible-role-bitwardenrs
   version: 'v1.1.0'

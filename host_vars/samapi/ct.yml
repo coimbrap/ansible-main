@@ -1,11 +1,11 @@
-ct_name: dns
-ct_vmid: "105"
+ct_name: samapi
+ct_vmid: "150"
 ct_node: "pve"
 ct_if: vmbr1
 ct_vlan: 20
 ct_prefix4: "10.0.20"
 ct_cpus: 1
-ct_ram: 1024
+ct_ram: 510
 ct_swap: 0
 ct_storage: local-zfs
 ct_disk: "8"

@@ -1,0 +1,11 @@
+generate_server_cert: true
+generate_tls_certs: true
+
+server_name: ldapui
+tls_server_key_cn: 'ldapui.devo.re'
+tls_server_valid_days: 730
+tls_server_key_size: 4096
+tls_server_enable_san: false
+
+copy_cert: true
+haproxy_to_nginx: true

@@ -1,0 +1,10 @@
+---
+- hosts: ldapui
+  connection: ssh
+  gather_facts: yes
+  roles:
+    - selfsignedcerts
+    - ldap-panel
+  environment:
+    HTTP_PROXY: '10.0.20.252:3128'
+    HTTPS_PROXY: '10.0.20.252:3128'

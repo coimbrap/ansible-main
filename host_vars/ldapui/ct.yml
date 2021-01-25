@@ -1,5 +1,5 @@
-ct_name: dns
-ct_vmid: "105"
+ct_name: ldapui
+ct_vmid: "107"
 ct_node: "pve"
 ct_if: vmbr1
 ct_vlan: 20

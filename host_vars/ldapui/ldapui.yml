@@ -1,0 +1,23 @@
+ldap_uri: "ldap://ldap.devo.re"
+ldap_base_dn: "dc=devo,dc=re"
+ldap_admin_bind_dn: "cn=admin,dc=devo,dc=re"
+ldap_admin_bind_pwd: "strongpass"
+ldap_admins_group: "admins"
+
+organisation_name: "devore"
+server_hostname: "lui.devo.re"
+
+ldap_user_ou: "people"
+ldap_group_ou: "group"
+ldap_require_starttls: "true"
+ldap_igone_cert_errors: "false"
+ldap_tls_cacert: "$(</etc/ldap/ca-certificates.crt)"
+
+default_user_group: "users"
+
+nginx_cert_name: ldapui.crt
+nginx_key_name: ldapui.key
+
+
+cert_path: /etc/ssl/ldap
+server_cert: ldap.pem

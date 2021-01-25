@@ -1,0 +1,10 @@
+---
+- hosts: ldap
+  connection: ssh
+  gather_facts: false
+  roles:
+    - selfsignedcerts
+    - openldap
+  environment:
+    HTTP_PROXY: '10.0.20.252:3128'
+    HTTPS_PROXY: '10.0.20.252:3128'
