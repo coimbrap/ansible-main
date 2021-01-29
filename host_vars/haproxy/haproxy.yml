@@ -56,13 +56,17 @@ haproxy_backend:
       - action: deny
 
 backendacl:
+  - name: bitwarden
+    sub: p
+    ipPorts: ['10.0.20.102:80']
   - name: cloud
     sub: c
-    ipPorts: ['10.0.20.102:80']
+    ipPorts: ['10.0.20.108:443']
+    opt: ssl verify none
   - name: ldapui
     sub: lui
-    ipPorts: ['10.0.20.107:443']
-    opt: ssl check ca-file /etc/ssl/haproxy/devore-ca.pem
+    ipPorts: ['10.0.20.107:80']
+    #opt: ssl check ca-file /etc/ssl/haproxy/devore-ca.pem
   - name: mailgateway
     sub: mgw
     ipPorts: ['10.0.20.103:8006']

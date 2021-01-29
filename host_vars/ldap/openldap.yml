@@ -10,7 +10,6 @@ delegate_to_ldap: ldap
 
 need_tls_cert: "{{ (groups.nc + groups.backmail + groups.pmg) | list }}"
 
-
 cert_path: /etc/ssl/ldap
 ca_cert: devore-ca.pem
 server_cert: ldap.pem
@@ -21,16 +20,28 @@ domain: devo.re
 org: devo
 ldap_backend: "mdb"
 
-ou:
-  - name: group
-  - name: people
-  - name: system
-
+#Admin define in Vault file
 cn:
- - name: admins
-   description: devo admins
- - name: users
-   description: devo users
+  - name: lastGID
+    oc: #Object Class
+      - device
+      - top
+    description: last gid of a group
+  - name: lastUID
+    oc:
+      - device
+      - top
+    description: last uid of an account
+  - name: admins
+    base: groups
+    description: devo admins
+    member: cn=admin,dc=devo,dc=re
+  - name: everybody
+    base: groups
+    description: devo everybody
+  - name: users
+    base: groups
+    description: devo users
 
 pen: 56022
 schemas:

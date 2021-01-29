@@ -1,4 +1,4 @@
-ct_name: cloud
+ct_name: bitwarden
 ct_vmid: "102"
 ct_node: "pve"
 ct_if: vmbr1

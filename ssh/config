@@ -19,7 +19,7 @@ Host proxy
     User root
     ProxyJump bastion
 
-Host cloud
+Host bitwarden
     Hostname  10.0.20.102
     User root
     ProxyJump bastion
@@ -44,6 +44,16 @@ Host dns
     User root
     ProxyJump bastion
 
+Host samapi
+    Hostname  10.0.20.150
+    User root
+    ProxyJump bastion
+
+Host cloud
+    Hostname  10.0.20.108
+    User root
+    ProxyJump bastion
+
 Host ldap
     Hostname  10.0.20.106
     User root
@@ -51,10 +61,5 @@ Host ldap
 
 Host ldapui
     Hostname  10.0.20.107
-    User root
-    ProxyJump bastion
-
-Host samapi
-    Hostname  10.0.20.150
     User root
     ProxyJump bastion
