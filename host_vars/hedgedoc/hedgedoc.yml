@@ -1,0 +1,45 @@
+---
+
+nodejs_version: "11.x"
+
+http_proxy: "http://10.0.20.252:3128/"
+
+ansible_user: "root"
+
+hedgedoc_version: "1.7.2"
+hedgedoc_source: "https://github.com/hedgedoc/hedgedoc/releases/download/{{ hedgedoc_version }}/hedgedoc-{{ hedgedoc_version }}.tar.gz"
+
+
+hedgedoc_session_secret: "03fCgJ269sIqixWHiupwC5KLOxkYY25vlp4LLCZbIzRBlFTsQVRPSmqUOJOu6tH9iPyyJUKe20mjakHzuVlo4yA3wXOkTjMiF1wkYQANH7ofh3qbgn5qjesgnk1wcWzCMMx1Ct5a10eBsknbdAjFKskptRhukGfg14zLo2llDOupLt8VU3fmNiISYAzqtTXtYcbaHFq0OMFWH7159FtOXl7PXhVr7jYrZvEvKkusXR7QCYaUwjl2JXDgZa"
+hedgedoc_domain: "hd.devo.re"
+
+hedgedoc_base_path: "/opt/hedgedoc"
+
+hedgedoc_user: "hedgedoc"
+hedgedoc_group: "hedgedoc"
+
+hedgedoc_loglevel: "warn"
+
+hedgedoc_db_dialect: "sqlite"
+hedgedoc_db_host: ""
+hedgedoc_db_username: "hedgedoc"
+hedgedoc_db_password: "SzafIjFq1gdMghU57i2qYTTfEYZn69sJkuNFjIkPvLaNVmLmfl5ncd5wcJwOOYmBGD2UD1kgNHRIXI5QhSt9WYzinHKZfztJ32p4dykEzUYNqpVIFhMPmRRPMXINCeJmwPfQy1S1UMEvrorH9IW6ciAMhanSUkPmTd0WT2SQ0LK5Wjyb"
+hedgedoc_db_database: "hedgedoc"
+hedgedoc_db_port: ""
+hedgedoc_db_storage: "/opt/hedgedoc/hedgedoc.sqlite"
+
+hedgedoc_allowed_origins: [
+  "{{ hedgedoc_domain }}"
+]
+hedgedoc_port: 3000
+hedgedoc_upload_type: "filesystem"
+
+hedgedoc_allow_email_login: true
+hedgedoc_allow_email_register: true
+hedgedoc_allow_free_url: true
+hedgedoc_allow_anonymous_edits: true
+hedgedoc_allow_anonymous: true
+
+hedgedoc_csp_enable: true
+hedgedoc_ssl_enable: true
+hedgedoc_hsts_enable: true

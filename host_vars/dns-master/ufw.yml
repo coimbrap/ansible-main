@@ -1,0 +1,9 @@
+ufw_rules:
+  - rule: allow
+    interface: "eth0"
+    to_port: 22,53
+    protocol: tcp
+  - rule: allow
+    interface: "eth0"
+    to_port: 53
+    protocol: udp

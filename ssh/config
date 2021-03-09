@@ -39,7 +39,7 @@ Host mail
     User root
     ProxyJump bastion
 
-Host dns
+Host dns-hidden-master
     Hostname  10.0.20.105
     User root
     ProxyJump bastion
@@ -61,5 +61,27 @@ Host ldap
 
 Host ldapui
     Hostname  10.0.20.107
+    User root
+    ProxyJump bastion
+
+Host dns-master
+    Hostname  10.0.20.253
+    User root
+    ProxyJump bastion
+
+Host krhacken
+    Hostname  10.0.20.222
+    User root
+    ProxyJump bastion
+
+Host dns-slave
+    Hostname  10.0.20.251
+    User root
+    ProxyJump bastion
+
+
+
+Host hedgedoc
+    Hostname  10.0.20.109
     User root
     ProxyJump bastion

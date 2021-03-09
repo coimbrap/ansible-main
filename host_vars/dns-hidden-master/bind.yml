@@ -1,0 +1,62 @@
+bind_views:
+  int:
+    recursion: any
+    acl:
+      - '!key ddns_certbot_global'
+      - int
+    zones:
+      - devo.re:
+          reverse: true
+          ipv4: 10.0.20.1/24
+          ns_primary: ns.devo.re
+          mail: root@ns.devo.re
+          options:
+            auto-dnssec: maintain
+            inline-signing: yes
+          records:
+            - { name: '@', type: ns, value: ns.devo.re. }
+            - { name: 'ns', type: a, ttl: 5m, value: 10.0.20.105 }
+            - { name: 'ns-a', type: a, ttl: 5m, value: 10.0.20.253 }
+            - { name: 'ns-b', type: a, ttl: 5m, value: 10.0.20.251 }
+            - { name: 'bastion', type: a, ttl: 5m, value: 10.0.20.100 }
+            - { name: 'pve', type: a, ttl: 5m, value: 10.0.20.1 }
+            - { name: 'opn', type: a, ttl: 5m, value: 10.0.20.254 }
+            - { name: 'pass', type: a, ttl: 5m, value: 10.0.20.102 }
+            - { name: 'ldap', type: a, ttl: 5m, value: 10.0.20.106 }
+            - { name: 'mailgw', type: a, ttl: 5m, value: 10.0.20.103 }
+            - { name: 'mail', type: a, ttl: 5m, value: 10.0.20.104 }
+            - { name: 'proxy', type: a, ttl: 5m, value: 10.0.20.252 }
+  ext:
+    recursion: none
+    acl:
+      - any
+    zones:
+      - devo.re:
+          reverse: true
+          r_records:
+            - { name: '@', type: ns, value: ns-a.devo.re. }
+            - { name: '@', type: ns, value: ns-b.devo.re. }
+            - { name: 'r', type: a, value: 195.154.163.18 }
+          ipv4: 195.154.163.18
+          ns_primary: ns.devo.re
+          mail: root@ns.devo.re
+          options:
+            auto-dnssec: maintain
+            inline-signing: yes
+          records:
+            - { name: '@', type: ns, value: ns-a.devo.re. }
+            - { name: '@', type: ns, value: ns-b.devo.re. }
+            - { name: '@', type: a, ttl: 5m, value: 195.154.163.18 }
+            - { name: '*', type: a, ttl: 5m, value: 195.154.163.18 }
+
+bind_acl:
+  int:
+    - "10.0.20.0/24"
+    - "localhost"
+
+bind_options:
+  server-id: '"1"'
+
+bind_role: master
+bind_listen_ipv4: true
+bind_listen_ipv6: false
